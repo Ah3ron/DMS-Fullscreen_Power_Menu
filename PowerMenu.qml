@@ -60,7 +60,7 @@ PluginComponent {
 		WlrLayershell.namespace: "dms:plugins:fullscreenPowerMenu"
 		WlrLayershell.layer: WlrLayershell.Overlay
 		WlrLayershell.exclusiveZone: -1
-		WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
+		WlrLayershell.keyboardFocus: overlay.visible ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
 
 		anchors {
 			top: true
