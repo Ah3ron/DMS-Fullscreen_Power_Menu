@@ -82,25 +82,14 @@ PluginComponent {
 			}
 		}
 
-		// Power Menu Card
-		Rectangle {
-			id: menuCard
+		// Master Animation Container
+		Item {
+			id: menuContainer
 			anchors.centerIn: parent
 			width: mainRow.implicitWidth + 48
 			height: mainRow.implicitHeight + 48
-			radius: 32
-			color: Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, pluginData && pluginData.menuOpacity != null ? pluginData.menuOpacity / 100 : 0.20)
-			border.color: Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.20) // Use Theme.primary for the border as well
 
-			layer.enabled: true
-			layer.effect: DropShadow {
-				verticalOffset: 6
-				radius: 20
-				samples: 41
-				color: Qt.rgba(0, 0, 0, overlay.visible ? 0.35 : 0.0)
-				transparentBorder: true
-			}
-
+			// Master animations apply to both Card & Shadow!
 			scale: overlay.visible ? 1.0 : 0.95
 			opacity: overlay.visible ? 1.0 : 0.0
 
@@ -113,6 +102,30 @@ PluginComponent {
 
 			Behavior on scale   { NumberAnimation { duration: 400; easing.type: Easing.OutQuart } }
 			Behavior on opacity { NumberAnimation { duration: 250 } }
+
+			// Graphical Shadow (Sibling layout guarantees it works over QML6 layer bugs)
+			DropShadow {
+				id: menuCardShadow
+				anchors.fill: menuCard
+				source: menuCard
+				verticalOffset: 16
+				horizontalOffset: 0
+				radius: 48
+				samples: 97
+				spread: 0.05
+				color: Qt.rgba(0, 0, 0, overlay.visible ? 0.55 : 0.0)
+				transparentBorder: true
+				Behavior on color { ColorAnimation { duration: 300 } }
+			}
+
+			// Power Menu Card
+			Rectangle {
+				id: menuCard
+				anchors.fill: parent
+				radius: 32
+				color: Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, pluginData && pluginData.menuOpacity != null ? pluginData.menuOpacity / 100 : 0.20)
+				border.color: Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.20) // Use Theme.primary for the border as well
+
 			Behavior on color   { ColorAnimation { duration: 300 } }
 			Behavior on border.color { ColorAnimation { duration: 300 } }
 
@@ -217,6 +230,7 @@ PluginComponent {
 					}
 				}
 			}
+		}
 		}
 
 		// Keyboard handler on overlay background
