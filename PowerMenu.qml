@@ -132,13 +132,22 @@ PluginComponent {
 			// Escape key to close
 			Keys.onEscapePressed: root.close()
 
-			RowLayout {
+			GridLayout {
 				id: mainRow
 				anchors.centerIn: parent
-				spacing: 12
+				columnSpacing: 12
+				rowSpacing: 12
+
+				// Orientation evaluation bindings
+				property string visualOrientation: pluginData && pluginData.menuOrientation ? pluginData.menuOrientation : "dynamic"
+				property bool isVerticalCalc: visualOrientation === "vertical" || (visualOrientation === "dynamic" && overlay.height > overlay.width)
+
+				columns: isVerticalCalc ? 1 : 6
+				rows: isVerticalCalc ? 6 : 1
 
 				PowerButton {
 					id: lockBtn
+					isVerticalFlow: mainRow.isVerticalCalc
 					buttonId: "lock"
 					label: "Lock"
 					iconCode: "lock"
@@ -155,6 +164,7 @@ PluginComponent {
 
 				PowerButton {
 					id: sleepBtn
+					isVerticalFlow: mainRow.isVerticalCalc
 					buttonId: "sleep"
 					label: "Sleep"
 					iconCode: "bedtime"
@@ -170,6 +180,7 @@ PluginComponent {
 
 				PowerButton {
 					id: dmsBtn
+					isVerticalFlow: mainRow.isVerticalCalc
 					buttonId: "dms"
 					label: "Restart DMS"
 					shortcutKey: "D"
@@ -185,6 +196,7 @@ PluginComponent {
 
 				PowerButton {
 					id: restartBtn
+					isVerticalFlow: mainRow.isVerticalCalc
 					buttonId: "restart"
 					label: "Restart"
 					iconCode: "restart_alt"
@@ -200,6 +212,7 @@ PluginComponent {
 
 				PowerButton {
 					id: logoutBtn
+					isVerticalFlow: mainRow.isVerticalCalc
 					buttonId: "logout"
 					label: "Log Out"
 					iconCode: "logout"
@@ -215,6 +228,7 @@ PluginComponent {
 
 				PowerButton {
 					id: powerBtn
+					isVerticalFlow: mainRow.isVerticalCalc
 					buttonId: "power"
 					label: "Power Off"
 					iconCode: "power_settings_new"
@@ -267,6 +281,7 @@ PluginComponent {
 	// -------------------------------------------------------------------------
 
 	component PowerButton: Item {
+		property bool isVerticalFlow: false
 		property string buttonId: ""
 		property string label: ""
 		property string iconCode: ""
@@ -311,17 +326,17 @@ PluginComponent {
 			property real tlrAnim: tlr
 			Behavior on tlrAnim { NumberAnimation { duration: 100; easing.type: Easing.OutCubic } }
 
-			property real trr: ma.containsMouse ? hoverRadius : (isLast ? 28 : defaultRadius)
+			property real trr: ma.containsMouse ? hoverRadius : (isVerticalFlow ? (isFirst ? 28 : defaultRadius) : (isLast ? 28 : defaultRadius))
 			property real trrAnim: trr
 			Behavior on trrAnim { NumberAnimation { duration: 100; easing.type: Easing.OutCubic } }
+
+			property real blr: ma.containsMouse ? hoverRadius : (isVerticalFlow ? (isLast ? 28 : defaultRadius) : (isFirst ? 28 : defaultRadius))
+			property real blrAnim: blr
+			Behavior on blrAnim { NumberAnimation { duration: 100; easing.type: Easing.OutCubic } }
 
 			property real brr: ma.containsMouse ? hoverRadius : (isLast ? 28 : defaultRadius)
 			property real brrAnim: brr
 			Behavior on brrAnim { NumberAnimation { duration: 100; easing.type: Easing.OutCubic } }
-
-			property real blr: ma.containsMouse ? hoverRadius : (isFirst ? 28 : defaultRadius)
-			property real blrAnim: blr
-			Behavior on blrAnim { NumberAnimation { duration: 100; easing.type: Easing.OutCubic } }
 
 			property color paintColor: isPrimary 
 				? (ma.containsMouse ? Qt.rgba(bgColor.r, bgColor.g, bgColor.b, bgColor.a + 0.2) : bgColor)

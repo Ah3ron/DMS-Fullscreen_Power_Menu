@@ -1,9 +1,9 @@
-# <img width="24" height="24" alt="image" src="https://raw.githubusercontent.com/AvengeMedia/DankMaterialShell/f2df53afcd0870445e7f3cd45e91ac135a04442e/assets/danklogo.svg" /> DMS-Full_Screen_Power_Menu
+# <img width="24" height="24" alt="image" src="https://raw.githubusercontent.com/AvengeMedia/DankMaterialShell/f2df53afcd0870445e7f3cd45e91ac135a04442e/assets/danklogo.svg" /> DMS-Fullscreen_Power_Menu
 
 [![DMS Version](https://img.shields.io/badge/DMS-Compatible-purple.svg)](https://github.com/DankMaterialShell)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/JDKamalakar/DMS-Full_Screen_Power_Menu/graphs/commit-activity)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/JDKamalakar/DMS-Fullscreen_Power_Menu/graphs/commit-activity)
 
-An elegant implementation of a **Material 3-inspired Full Screen Power Menu**, specifically designed for the **Dank Material Shell** (DMS) environment.
+An elegant implementation of a **Material 3-inspired Fullscreen Power Menu**, specifically designed for the **Dank Material Shell** (DMS) environment.
 
 Upgrade your session management with a seamless, highly customizable, and fluidly animated overlay to lock, sleep, reboot, or power off your desktop.
 
@@ -21,7 +21,7 @@ Upgrade your session management with a seamless, highly customizable, and fluidl
 ## 📸 Interface Preview
 
 ### 🖥️ Main Display
-| Full-Screen Overlay |
+| Fullscreen Overlay |
 | :--- |
 | **🚧 Replace with: `<img width="..." height="..." alt="Main UI" src="..."/>`** |
 
@@ -38,14 +38,14 @@ Upgrade your session management with a seamless, highly customizable, and fluidl
 The easiest way to install and stay updated:
 1. Open your **DMS Settings**.
 2. Navigate to the **Plugin Manager** tab.
-3. Search for `DMS-Full_Screen_Power_Menu` and click **Install**.
+3. Search for `DMS-Fullscreen_Power_Menu` and click **Install**.
 4. Alternatively, browse the [Dank Linux Plugin Gallery](https://danklinux.com/plugins#/).
 
 ### 🛠️ Manual Installation
 For developers or users who want the latest edge builds:
 1. Clone this repository into your DMS extensions/plugins folder:
    ```bash
-   git clone https://github.com/JDKamalakar/DMS-Full_Screen_Power_Menu.git
+   git clone https://github.com/JDKamalakar/DMS-Fullscreen_Power_Menu.git
    ```
 
 ---
@@ -54,7 +54,7 @@ For developers or users who want the latest edge builds:
 
 Found a bug or have a feature request? Let’s make this better together.
 
-* **Report Issues:** [GitHub Issues](https://github.com/JDKamalakar/DMS-Full_Screen_Power_Menu/issues/new/choose)
+* **Report Issues:** [GitHub Issues](https://github.com/JDKamalakar/DMS-Fullscreen_Power_Menu/issues/new/choose)
 * **Contributions:** Pull requests are welcome! Please ensure your code follows the shell's design guidelines.
 
 ---

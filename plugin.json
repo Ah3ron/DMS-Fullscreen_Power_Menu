@@ -1,17 +1,28 @@
 {
     "id": "fullscreenPowerMenu",
-    "name": "Full Screen Power Menu",
+    "name": "Fullscreen Power Menu",
     "description": "Material 3 inspired fullscreen Power Menu triggered via IPC",
     "version": "1.0.0",
     "author": "JDKamalakar",
-    "icon": "screenshot_region",
+    "icon": "power_settings_new",
     "type": "daemon",
-    "capabilities": [
-        "power"
-    ],
     "component": "./PowerMenu.qml",
     "settings": "./PowerMenuSettings.qml",
-    "requires_dms": ">=1.2.0",
+    "capabilities": [
+        "power",
+        "ipc"
+    ],
+    "repo": "https://github.com/JDKamalakar/DMS-FullscreenPowerMenu",
+    "compositors": [
+        "any"
+    ],
+    "distro": [
+        "any"
+    ],
+    "dependencies": [
+        "dms"
+    ],
+    "screenshot": "https://raw.githubusercontent.com/JDKamalakar/DMS-FullscreenPowerMenu/refs/heads/main/assets/Main_UI.png",
     "permissions": [
         "process",
         "settings_read",

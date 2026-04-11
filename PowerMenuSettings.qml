@@ -15,7 +15,7 @@ PluginSettings {
         spacing: Theme.spacingM
 
         function loadValue() {
-            var groups = [generalGroup, cmdGroup];
+            var groups = [orientationGroup, generalGroup, cmdGroup];
             for (var g = 0; g < groups.length; g++) {
                 var group = groups[g];
                 for (var i = 0; i < group.children.length; i++) {
@@ -25,6 +25,82 @@ PluginSettings {
                         for (var j = 0; j < item.children.length; j++) {
                             var subItem = item.children[j];
                             if (subItem.loadValue) subItem.loadValue();
+                        }
+                    }
+                }
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // ORIENTATION SETTINGS CONTAINER
+        // ---------------------------------------------------------------------
+        Rectangle {
+            width: parent.width
+            height: orientationGroup.implicitHeight + Theme.spacingM * 2
+            color: Theme.surfaceContainer
+            radius: Theme.cornerRadius
+            border.color: Theme.outline
+            border.width: 1
+            opacity: 0.8
+
+            Column {
+                id: orientationGroup
+                anchors.fill: parent
+                anchors.margins: Theme.spacingM
+                spacing: Theme.spacingM
+
+                // -------------------------------------------------------------
+                // Menu Orientation
+                // -------------------------------------------------------------
+                Column {
+                    width: parent.width
+                    spacing: Theme.spacingXS
+                    Row {
+                        width: parent.width
+                        spacing: Theme.spacingM
+                        DankIcon { name: "screen_rotation"; size: 22; anchors.verticalCenter: parent.verticalCenter; opacity: 0.8 }
+                        Column {
+                            width: parent.width - 22 - Theme.spacingM
+                            StyledText { text: "Menu Orientation"; font.pixelSize: Theme.fontSizeMedium; font.weight: Font.Medium; color: Theme.surfaceText }
+                            StyledText { text: "Change the button grid flow depending on device orientation."; font.pixelSize: Theme.fontSizeSmall; color: Theme.surfaceVariantText; width: parent.width; wrapMode: Text.WordWrap }
+                        }
+                    }
+                    DankDropdown {
+                        id: orientationDropdown
+                        width: parent.width
+
+                        property string settingKey: "menuOrientation"
+                        property string defaultValue: "dynamic"
+                        property var optionList: [
+                            { label: "Dynamic (Auto-detect)", value: "dynamic" },
+                            { label: "Horizontal Flow", value: "horizontal" },
+                            { label: "Vertical Flow", value: "vertical" }
+                        ]
+
+                        options: ["Dynamic (Auto-detect)", "Horizontal Flow", "Vertical Flow"]
+                        
+                        function loadValue() {
+                            var settings = root;
+                            if (settings) {
+                                var loadedVal = settings.loadValue(settingKey, defaultValue);
+                                for (var i = 0; i < optionList.length; i++) {
+                                    if (optionList[i].value === loadedVal) {
+                                        currentValue = optionList[i].label;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        
+                        Component.onCompleted: loadValue()
+                        
+                        onValueChanged: newValue => {
+                            for (var i = 0; i < optionList.length; i++) {
+                                if (optionList[i].label === newValue) {
+                                    root.saveValue(settingKey, optionList[i].value);
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
