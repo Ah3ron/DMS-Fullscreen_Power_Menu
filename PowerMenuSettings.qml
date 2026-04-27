@@ -481,4 +481,3 @@ PluginSettings {
         }
     }
 }
-}

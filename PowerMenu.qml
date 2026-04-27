@@ -20,32 +20,32 @@ PluginComponent {
 		target: "fullscreenPowerMenu"
 
 		function toggle(): string {
-			root.toggle();
+			root.toggleMenu();
 			return overlay.visible ? "opened" : "closed";
 		}
 
 		function open(): string {
-			if (!overlay.visible) root.open();
+			if (!overlay.visible) root.openMenu();
 			return "opened";
 		}
 
 		function close(): string {
-			if (overlay.visible) root.close();
+			if (overlay.visible) root.closeMenu();
 			return "closed";
 		}
 	}
 
-	function open() {
+	function openMenu() {
 		overlay.visible = true;
 	}
 
-	function close() {
+	function closeMenu() {
 		overlay.visible = false;
 	}
 
-	function toggle() {
-		if (overlay.visible) root.close();
-		else root.open();
+	function toggleMenu() {
+		if (overlay.visible) root.closeMenu();
+		else root.openMenu();
 	}
 
 	// -------------------------------------------------------------------------
@@ -78,7 +78,7 @@ PluginComponent {
 
 			MouseArea {
 				anchors.fill: parent
-				onClicked: root.close()
+				onClicked: root.closeMenu()
 			}
 		}
 
@@ -123,14 +123,14 @@ PluginComponent {
 				id: menuCard
 				anchors.fill: parent
 				radius: 32
-				color: Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, pluginData && pluginData.menuOpacity != null ? pluginData.menuOpacity / 100 : 0.20)
-				border.color: Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.20) // Use Theme.primary for the border as well
+				color: (typeof Theme !== 'undefined' && Theme.primary) ? Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, pluginData && pluginData.menuOpacity != null ? pluginData.menuOpacity / 100 : 0.20) : Qt.rgba(0.2, 0.2, 0.2, 0.2)
+				border.color: (typeof Theme !== 'undefined' && Theme.primary) ? Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.20) : Qt.rgba(1, 1, 1, 0.2) // Use Theme.primary for the border as well
 
 			Behavior on color   { ColorAnimation { duration: 300 } }
 			Behavior on border.color { ColorAnimation { duration: 300 } }
 
 			// Escape key to close
-			Keys.onEscapePressed: root.close()
+			Keys.onEscapePressed: root.closeMenu()
 
 			GridLayout {
 				id: mainRow
@@ -156,7 +156,7 @@ PluginComponent {
 					accentColor: "#93C5FD"
 					bgColor: Qt.rgba(0.23, 0.51, 0.96, 0.2)
 					onActivated: {
-						root.close();
+						root.closeMenu();
 						lockProc.command = (pluginData && pluginData.lockCommand ? pluginData.lockCommand : "loginctl lock-session").split(" ");
 						lockProc.running = true;
 					}
@@ -172,7 +172,7 @@ PluginComponent {
 					accentColor: "#A5B4FC"
 					bgColor: Qt.rgba(0.39, 0.38, 0.96, 0.2)
 					onActivated: {
-						root.close();
+						root.closeMenu();
 						suspendProc.command = (pluginData && pluginData.suspendCommand ? pluginData.suspendCommand : "systemctl suspend").split(" ");
 						suspendProc.running = true;
 					}
@@ -188,7 +188,7 @@ PluginComponent {
 					accentColor: "#FDE047"
 					bgColor: Qt.rgba(0.99, 0.88, 0.28, 0.2)
 					onActivated: {
-						root.close();
+						root.closeMenu();
 						dmsRestartProc.command = (pluginData && pluginData.dmsRestartCommand ? pluginData.dmsRestartCommand : "dms restart").split(" ");
 						dmsRestartProc.running = true;
 					}
@@ -204,7 +204,7 @@ PluginComponent {
 					accentColor: "#86EFAC"
 					bgColor: Qt.rgba(0.13, 0.77, 0.36, 0.2)
 					onActivated: {
-						root.close();
+						root.closeMenu();
 						rebootProc.command = (pluginData && pluginData.rebootCommand ? pluginData.rebootCommand : "systemctl reboot").split(" ");
 						rebootProc.running = true;
 					}
@@ -220,7 +220,7 @@ PluginComponent {
 					accentColor: "#FDBA74"
 					bgColor: Qt.rgba(0.97, 0.58, 0.11, 0.2)
 					onActivated: {
-						root.close();
+						root.closeMenu();
 						logoutProc.command = (pluginData && pluginData.logoutCommand ? pluginData.logoutCommand : "loginctl terminate-session $XDG_SESSION_ID").split(" ");
 						logoutProc.running = true;
 					}
@@ -238,7 +238,7 @@ PluginComponent {
 					bgColor: Qt.rgba(0.94, 0.26, 0.26, 0.2)
 					isPrimary: true
 					onActivated: {
-						root.close();
+						root.closeMenu();
 						shutdownProc.command = (pluginData && pluginData.shutdownCommand ? pluginData.shutdownCommand : "systemctl poweroff").split(" ");
 						shutdownProc.running = true;
 					}
@@ -251,8 +251,8 @@ PluginComponent {
 		Item {
 			anchors.fill: parent
 			focus: overlay.visible
-			Keys.onEscapePressed: root.close()
-			Keys.onPressed: (event) => {
+			Keys.onEscapePressed: root.closeMenu()
+			Keys.onPressed: function(event) {
 				if (event.key === Qt.Key_L) lockBtn.activated();
 				else if (event.key === Qt.Key_S) sleepBtn.activated();
 				else if (event.key === Qt.Key_D) dmsBtn.activated();
@@ -539,7 +539,7 @@ PluginComponent {
 	}
 
 	Component.onCompleted: {
-		console.info("fullscreenPowerMenu: daemon loaded — use 'dms ipc fullscreenPowerMenu toggle' to open");
+		console.info("fullscreenPowerMenu: daemon loaded — use 'dms ipc call fullscreenPowerMenu toggle' to open");
 	}
 }
 
