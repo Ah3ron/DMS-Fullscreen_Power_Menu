@@ -248,6 +248,93 @@ PluginSettings {
                         }
                     }
                 }
+
+                // -------------------------------------------------------------
+                // Animations Toggle
+                // -------------------------------------------------------------
+                DankToggle {
+                    id: animToggle
+                    width: parent.width
+                    text: "Animations"
+                    description: "Enable or disable all menu animations."
+                    property string settingKey: "animationsEnabled"
+                    property bool defaultValue: true
+                    function loadValue() {
+                        var settings = root;
+                        if (settings) {
+                            var loaded = settings.loadValue(settingKey, defaultValue);
+                            checked = loaded === true || loaded === "true";
+                        }
+                    }
+                    Component.onCompleted: loadValue()
+                    onToggled: function(checked) {
+                        root.saveValue(settingKey, checked);
+                    }
+                }
+
+                // -------------------------------------------------------------
+                // Animation Speed
+                // -------------------------------------------------------------
+                Column {
+                    width: parent.width
+                    spacing: Theme.spacingXS
+                    opacity: animToggle.checked ? 1.0 : 0.4
+                    Row {
+                        width: parent.width
+                        spacing: Theme.spacingM
+                        DankIcon { name: "speed"; size: 22; anchors.verticalCenter: parent.verticalCenter; opacity: 0.8 }
+                        Column {
+                            width: parent.width - 22 - 22 - Theme.spacingM * 2
+                            StyledText { text: "Animation Speed"; font.pixelSize: Theme.fontSizeMedium; font.weight: Font.Medium; color: Theme.surfaceText }
+                            StyledText { text: "Controls the speed of all menu animations. Higher = faster."; font.pixelSize: Theme.fontSizeSmall; color: Theme.surfaceVariantText; width: parent.width; wrapMode: Text.WordWrap }
+                        }
+                        DankIcon {
+                            name: "restart_alt"
+                            size: 22
+                            anchors.verticalCenter: parent.verticalCenter
+                            opacity: animSpeedSlider.value !== 100 && animToggle.checked ? 0.8 : 0.0
+                            Behavior on opacity { NumberAnimation { duration: 200 } }
+                            NumberAnimation {
+                                id: animSpeedResetAnim
+                                target: animSpeedSlider
+                                property: "value"
+                                to: animSpeedSlider.defaultValue
+                                duration: 300
+                                easing.type: Easing.OutCubic
+                            }
+                            MouseArea {
+                                anchors.fill: parent
+                                enabled: animSpeedSlider.value !== 100 && animToggle.checked
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: {
+                                    animSpeedResetAnim.restart();
+                                    root.saveValue(animSpeedSlider.settingKey, animSpeedSlider.defaultValue);
+                                }
+                            }
+                        }
+                    }
+                    DankSlider {
+                        id: animSpeedSlider
+                        property int defaultValue: 100
+                        property string settingKey: "animationSpeed"
+                        width: parent.width
+                        minimum: 25
+                        maximum: 300
+                        unit: "%"
+                        enabled: animToggle.checked
+                        function loadValue() {
+                            var settings = root;
+                            if (settings) {
+                                value = settings.loadValue(settingKey, defaultValue);
+                            }
+                        }
+                        Component.onCompleted: loadValue()
+                        onSliderValueChanged: newValue => {
+                            value = newValue;
+                            root.saveValue(settingKey, newValue);
+                        }
+                    }
+                }
             }
         }
 
